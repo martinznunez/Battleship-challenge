@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { boatTypes } from '../../constants';
+import { boatTypes, initialCpuBoats } from '../../constants';
 import {
   USER_SUCCESSFUL_REGISTRATION,
   SET_BOAT,
@@ -42,6 +42,7 @@ const initialState = {
       positioned: false,
     },
   ],
+  cpuBoats: initialCpuBoats,
 };
 const gameReducer = (state = initialState, action) => {
   switch (action.type) {

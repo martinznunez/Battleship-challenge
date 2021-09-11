@@ -6,10 +6,30 @@ import Cell from '../components/Cell';
 const Container = styled.div`
   margin: auto;
   width: 100%;
-  height: 90vh;
+  height: 33vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
+`;
+
+const ContainerTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 30px;
+  h1 {
+    font-size: 3rem;
+  }
+`;
+
+const ContainerName = styled.div`
+  display: flex;
+  width: 90%;
+  justify-content: space-around;
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 900;
 `;
 
 const Card = styled.div`
@@ -22,10 +42,18 @@ const Card = styled.div`
 
 const Game = () => {
   const userCells = useSelector((state) => state.cells.userCells);
+  const cpuCells = useSelector((state) => state.cells.cpuCells);
+  const userName = useSelector((state) => state.game.userName);
 
   return (
     <>
-      <h1>Game</h1>
+      <ContainerTitle>
+        <h1>Game</h1>
+        <ContainerName>
+          <p> {userName} </p>
+          <p> computer </p>
+        </ContainerName>
+      </ContainerTitle>
       <Container>
         <Card>
           {userCells.map((cell) => (
@@ -38,8 +66,13 @@ const Game = () => {
           ))}
         </Card>
         <Card>
-          {userCells.map((cell) => (
-            <Cell key={cell.id} index={cell.index} positionX={cell.positionX} />
+          {cpuCells.map((cell) => (
+            <Cell
+              key={cell.id}
+              index={cell.index}
+              typeOfBoat={cell.typeOfBoat}
+              positionX={cell.positionX}
+            />
           ))}
         </Card>
       </Container>

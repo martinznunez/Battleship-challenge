@@ -13,6 +13,7 @@ export function setBoatSelection(cells, selectedBoat) {
     if (cell.touched) {
       cell.touched = false;
       cell.typeOfBoat = selectedBoat.type;
+      cell.boatId = selectedBoat.id;
     }
 
     return cell;

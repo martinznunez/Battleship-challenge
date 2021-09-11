@@ -1,8 +1,7 @@
-/* eslint-disable no-plusplus */
 import { v4 as uuid } from 'uuid';
-import { boatsOrientations } from '../constants';
+import { boatsOrientations, initialCpuBoats } from '../constants';
 
-export const generateUserCells = () => {
+const generateGrid = () => {
   const cells = [];
   let index = -1;
   for (let i = 0; i <= 9; i++) {
@@ -24,6 +23,120 @@ export const generateUserCells = () => {
   }
 
   return cells;
+};
+
+export const generateUserCells = () => {
+  return generateGrid();
+};
+
+const paintCells = (cellsToPaint, allCells) => {
+  const cellsCopy = [...allCells];
+  cellsToPaint.forEach((cellToPaint) => {
+    const copiedCell = cellToPaint;
+
+    const indexReference = copiedCell.index;
+    delete copiedCell.index;
+
+    cellsCopy[indexReference] = copiedCell;
+  });
+
+  return cellsCopy;
+};
+
+const validateAndSetBoat = ({
+  cells,
+  boat,
+  randomIndex: cellIndex,
+  randomOrientation: orientation,
+}) => {
+  let cellsWithBoat = [...cells];
+
+  const cell = cellsWithBoat[cellIndex];
+  const boatLength = boat.length;
+
+  let paintedBoat = false;
+
+  const positionToEvaluate =
+    orientation === boatsOrientations.HORIZONTAL
+      ? cell.positionX
+      : cell.positionY;
+
+  const numberToIncrement =
+    orientation === boatsOrientations.HORIZONTAL ? 0 : 10;
+
+  const forStart =
+    orientation === boatsOrientations.HORIZONTAL
+      ? positionToEvaluate - 1
+      : positionToEvaluate;
+
+  if (forStart + boatLength <= 9 && !cell.typeOfBoat) {
+    const cellsToPaint = [];
+    for (let i = 0; i < boatLength; i++) {
+      const pointer =
+        orientation === boatsOrientations.HORIZONTAL
+          ? cellIndex + i
+          : cellIndex + numberToIncrement * i;
+
+      if (!cells[pointer].typeOfBoat) {
+        const cellToPush = { ...cells[pointer] };
+        cellToPush.typeOfBoat = boat.type;
+        cellToPush.boatId = boat.id;
+
+        cellsToPaint.push({
+          index: pointer,
+          ...cellToPush,
+        });
+      }
+    }
+
+    if (cellsToPaint.length === boatLength) {
+      cellsWithBoat = paintCells(cellsToPaint, cellsWithBoat, orientation);
+      paintedBoat = true;
+    }
+  }
+
+  return { paintedBoat, cellsWithBoat };
+};
+
+const setRandomBoats = (cells) => {
+  let updatedCells = [...cells];
+
+  const availableBoats = initialCpuBoats;
+
+  const possibleOrientations = [
+    boatsOrientations.HORIZONTAL,
+    boatsOrientations.VERTICAL,
+  ];
+
+  while (availableBoats.length) {
+    const randomIndex = Math.floor(Math.random() * (99 - 0 + 1) + 0);
+
+    const randomOrientationIndex = Math.floor(Math.random() * (1 - 0 + 1) + 0);
+    const randomOrientation = possibleOrientations[randomOrientationIndex];
+
+    const boat = availableBoats[availableBoats.length - 1];
+
+    const { paintedBoat, cellsWithBoat } = validateAndSetBoat({
+      cells: updatedCells,
+      boat,
+      randomIndex,
+      randomOrientation,
+    });
+
+    if (paintedBoat) {
+      updatedCells = cellsWithBoat;
+      availableBoats.pop();
+    }
+  }
+
+  return updatedCells;
+};
+
+export const generateCpuCells = () => {
+  const cells = generateGrid();
+  const cellsWithBoats = setRandomBoats(cells);
+
+  return cellsWithBoats;
 };
 
 export const returnAllCellsAsUntouched = (cells) => {
@@ -77,7 +190,7 @@ export const checkBoatFill = ({ index, boatLength, orientation, cells }) => {
   const step = orientation === boatsOrientations.HORIZONTAL ? 1 : 10;
 
   for (let i = 0; i < boatLength; i++) {
-    if (cells[index + i * step].typeOfBoat) {
+    if (cells[index + i * step]?.typeOfBoat) {
       return false;
     }
   }
