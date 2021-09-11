@@ -82,9 +82,8 @@ const BoatsSelector = ({
   };
 
   const renderBoat = (boat) => (
-    <>
+    <div key={boat.id}>
       <BoatIcon
-        key={boat.id}
         type={boat.type}
         selected={selectedBoat.id === boat.id}
         src={`/assets/${boat.type}.png`}
@@ -92,7 +91,7 @@ const BoatsSelector = ({
         onClick={() => handleClickBoat(boat.id, boat.length)}
       />
       <p>{boat.type}</p>
-    </>
+    </div>
   );
 
   return (
@@ -108,7 +107,7 @@ const BoatsSelector = ({
 BoatsSelector.propTypes = {
   selectedBoat: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    length: PropTypes.string.isRequired,
+    length: PropTypes.number.isRequired,
   }).isRequired,
   handleSelectBoat: PropTypes.func.isRequired,
   setBoatOrientation: PropTypes.func.isRequired,

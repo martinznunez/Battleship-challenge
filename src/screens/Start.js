@@ -9,6 +9,10 @@ import BoatsSelector from '../components/BoatsSelector';
 import { boatsOrientations } from '../constants';
 import { userRegistration } from '../store/actions/gameActions';
 import { hoverCell } from '../store/actions/cellsActions';
+import {
+  mapAndSetTouchedCells,
+  returnAllCellsAsUntouched,
+} from '../utils/cells';
 
 const ContainerGroup = styled.div`
   margin: auto;
@@ -50,47 +54,13 @@ const ContainerInput = styled.div`
   justify-content: space-around;
 `;
 
-const setHoveredCells = ({
-  selectedBoat,
-  boatOrientation,
-  userCells,
-  hoveredCell,
-}) => {
-  let finalCells;
-  const boatLength = selectedBoat.length;
-
-  if (boatOrientation === boatsOrientations.HORIZONTAL) {
-    if (hoveredCell.positionX - 1 + boatLength > 9) {
-      return userCells;
-    }
-
-    finalCells = userCells.map((cell) => {
-      const copiedCell = { ...cell };
-      if (
-        copiedCell.positionX >= hoveredCell.positionX &&
-        copiedCell.positionX < hoveredCell.positionX + boatLength &&
-        copiedCell.positionY === hoveredCell.positionY
-      ) {
-        copiedCell.touched = true;
-      } else {
-        copiedCell.touched = false;
-      }
-      return copiedCell;
-    });
-
-    return finalCells;
-  }
-
-  return setHoveredCells;
-};
-
 const Start = ({ user, setUser }) => {
   const dispatch = useDispatch();
   const userCells = useSelector((state) => state.cells.userCells);
 
   const [isUser, setIsUser] = useState(false);
   const [messageError, setMessageError] = useState('');
-  const [selectedBoat, setSelectedBoat] = useState({ id: '', length: '' });
+  const [selectedBoat, setSelectedBoat] = useState({ id: '', length: 0 });
   const [boatOrientation, setBoatOrientation] = useState(
     boatsOrientations.HORIZONTAL
   );
@@ -112,7 +82,7 @@ const Start = ({ user, setUser }) => {
 
   const handleCellMouseOver = (hoveredCell) => {
     if (selectedBoat.id) {
-      const updatedUserCells = setHoveredCells({
+      const updatedUserCells = mapAndSetTouchedCells({
         selectedBoat,
         boatOrientation,
         userCells,
@@ -125,20 +95,11 @@ const Start = ({ user, setUser }) => {
 
   const onMouseLeave = () => {
     if (selectedBoat.id) {
-      const initialCell = [...userCells];
+      const initialCells = returnAllCellsAsUntouched(userCells);
 
-      initialCell.map((cell) => {
-        if (cell.touched) {
-          cell.touched = false;
-        }
-
-        return cell;
-      });
-
-      return dispatch(hoverCell(initialCell));
+      return dispatch(hoverCell(initialCells));
     }
-
-    return onMouseLeave;
+    return null;
   };
 
   return (

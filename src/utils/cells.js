@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { v4 as uuid } from 'uuid';
+import { boatsOrientations } from '../constants';
 
-// eslint-disable-next-line import/prefer-default-export
 export const generateUserCells = () => {
   const cells = [];
   for (let i = 0; i <= 9; i++) {
@@ -21,4 +21,50 @@ export const generateUserCells = () => {
   }
 
   return cells;
+};
+
+export const returnAllCellsAsUntouched = (cells) => {
+  return cells.map((cell) => {
+    const copiedCell = { ...cell };
+    copiedCell.touched = false;
+    return copiedCell;
+  });
+};
+
+export const mapAndSetTouchedCells = ({
+  selectedBoat,
+  boatOrientation,
+  userCells,
+  hoveredCell,
+}) => {
+  const boatLength = selectedBoat.length;
+
+  const referencePosition =
+    boatOrientation === boatsOrientations.HORIZONTAL
+      ? 'positionX'
+      : 'positionY';
+
+  const oppositePosition =
+    referencePosition === 'positionX' ? 'positionY' : 'positionX';
+
+  if (hoveredCell[referencePosition] - 1 + boatLength > 9) {
+    return returnAllCellsAsUntouched(userCells);
+  }
+
+  const finalCells = userCells.map((cell) => {
+    const copiedCell = { ...cell };
+    if (
+      copiedCell[referencePosition] >= hoveredCell[referencePosition] &&
+      copiedCell[referencePosition] <
+        hoveredCell[referencePosition] + boatLength &&
+      copiedCell[oppositePosition] === hoveredCell[oppositePosition]
+    ) {
+      copiedCell.touched = true;
+    } else {
+      copiedCell.touched = false;
+    }
+    return copiedCell;
+  });
+
+  return finalCells;
 };

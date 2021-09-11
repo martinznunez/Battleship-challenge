@@ -11,26 +11,31 @@ const initialState = {
       id: uuid(),
       type: boatTypes.CARRIER,
       length: 4,
+      positioned: false,
     },
     {
       id: uuid(),
       type: boatTypes.CRUISER,
       length: 3,
+      positioned: false,
     },
     {
       id: uuid(),
       type: boatTypes.CRUISER,
       length: 3,
+      positioned: false,
     },
     {
       id: uuid(),
       type: boatTypes.CRUISER,
       length: 3,
+      positioned: false,
     },
     {
       id: uuid(),
       type: boatTypes.SUBMARINE,
       length: 2,
+      positioned: false,
     },
   ],
 };
