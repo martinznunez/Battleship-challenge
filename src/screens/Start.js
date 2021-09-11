@@ -50,6 +50,40 @@ const ContainerInput = styled.div`
   justify-content: space-around;
 `;
 
+const setHoveredCells = ({
+  selectedBoat,
+  boatOrientation,
+  userCells,
+  hoveredCell,
+}) => {
+  let finalCells;
+  const boatLength = selectedBoat.length;
+
+  if (boatOrientation === boatsOrientations.HORIZONTAL) {
+    if (hoveredCell.positionX - 1 + boatLength > 9) {
+      return userCells;
+    }
+
+    finalCells = userCells.map((cell) => {
+      const copiedCell = { ...cell };
+      if (
+        copiedCell.positionX >= hoveredCell.positionX &&
+        copiedCell.positionX < hoveredCell.positionX + boatLength &&
+        copiedCell.positionY === hoveredCell.positionY
+      ) {
+        copiedCell.touched = true;
+      } else {
+        copiedCell.touched = false;
+      }
+      return copiedCell;
+    });
+
+    return finalCells;
+  }
+
+  return setHoveredCells;
+};
+
 const Start = ({ user, setUser }) => {
   const dispatch = useDispatch();
   const userCells = useSelector((state) => state.cells.userCells);
@@ -76,21 +110,35 @@ const Start = ({ user, setUser }) => {
     setSelectedBoat({ id: boatId, length });
   };
 
-  const handleCellMouseOver = (cellId) => {
+  const handleCellMouseOver = (hoveredCell) => {
     if (selectedBoat.id) {
-      const updatedUserCells = userCells.map((cell) => {
-        const copiedCell = cell;
-        if (copiedCell.id === cellId) {
-          copiedCell.touched = true;
-        } else {
-          copiedCell.touched = false;
-        }
-
-        return copiedCell;
+      const updatedUserCells = setHoveredCells({
+        selectedBoat,
+        boatOrientation,
+        userCells,
+        hoveredCell,
       });
 
       dispatch(hoverCell(updatedUserCells));
     }
+  };
+
+  const onMouseLeave = () => {
+    if (selectedBoat.id) {
+      const initialCell = [...userCells];
+
+      initialCell.map((cell) => {
+        if (cell.touched) {
+          cell.touched = false;
+        }
+
+        return cell;
+      });
+
+      return dispatch(hoverCell(initialCell));
+    }
+
+    return onMouseLeave;
   };
 
   return (
@@ -107,13 +155,13 @@ const Start = ({ user, setUser }) => {
         ) : null}
 
         <Container>
-          <Card>
+          <Card onMouseLeave={onMouseLeave}>
             {userCells.map((cell) => (
               <Cell
                 key={cell.id}
                 touched={cell.touched}
                 positionX={cell.positionX}
-                onMouseOver={() => handleCellMouseOver(cell.id)}
+                onMouseOver={() => handleCellMouseOver(cell)}
               />
             ))}
           </Card>
