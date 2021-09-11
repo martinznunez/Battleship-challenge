@@ -148,6 +148,8 @@ const Start = ({ user, setUser }) => {
         {isUser ? (
           <div>
             <BoatsSelector
+              boatOrientation={boatOrientation}
+              setBoatOrientation={setBoatOrientation}
               handleSelectBoat={handleSelectBoat}
               selectedBoat={selectedBoat}
             />

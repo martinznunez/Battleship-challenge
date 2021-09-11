@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RiSailboatFill } from 'react-icons/ri';
 import Button from './Button';
-import { boatTypes } from '../constants';
+import { boatTypes, boatsOrientations } from '../constants';
 
 const Container = styled.div`
   width: 100%;
@@ -61,7 +61,12 @@ const ContainerBtn = styled.div`
   }
 `;
 
-const BoatsSelector = ({ selectedBoat, handleSelectBoat }) => {
+const BoatsSelector = ({
+  selectedBoat,
+  handleSelectBoat,
+  setBoatOrientation,
+  boatOrientation,
+}) => {
   const boats = useSelector((state) => state.game.boats);
 
   const handleClickBoat = (boatId, length) => {
@@ -69,7 +74,11 @@ const BoatsSelector = ({ selectedBoat, handleSelectBoat }) => {
   };
 
   const handlerClick = () => {
-    console.log('');
+    if (boatOrientation === boatsOrientations.HORIZONTAL) {
+      setBoatOrientation(boatsOrientations.VERTICAL);
+    } else {
+      setBoatOrientation(boatsOrientations.HORIZONTAL);
+    }
   };
 
   const renderBoat = (boat) => (
@@ -102,6 +111,8 @@ BoatsSelector.propTypes = {
     length: PropTypes.string.isRequired,
   }).isRequired,
   handleSelectBoat: PropTypes.func.isRequired,
+  setBoatOrientation: PropTypes.func.isRequired,
+  boatOrientation: PropTypes.string.isRequired,
 };
 
 export default BoatsSelector;
