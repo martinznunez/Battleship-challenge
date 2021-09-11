@@ -6,20 +6,53 @@ const Square = styled.span`
   flex-basis: calc(10% - 4px);
   height: 30px;
   border: 2px solid #777;
-  background: ${(p) => p.touched && '#000'};
+  background: ${(p) => p.bgColor};
 `;
-const Cell = ({ positionX, onMouseOver, touched }) => {
+
+const getColor = (touched, typeOfBoat) => {
+  let baseCondition = typeOfBoat;
+  if (touched) {
+    baseCondition = 'touched';
+  }
+  const colors = {
+    touched: '#000',
+    cruiser: 'red',
+    carrier: 'green',
+    submarine: 'blue',
+  };
+
+  return colors[baseCondition];
+};
+
+const Cell = ({ onMouseOver, touched, handleClick, typeOfBoat, index }) => {
+  const bgColor = getColor(touched, typeOfBoat);
+
   return (
-    <Square touched={touched} onMouseOver={onMouseOver}>
-      {positionX}
+    <Square
+      onClick={handleClick}
+      bgColor={bgColor}
+      typeOfBoat={typeOfBoat}
+      touched={touched}
+      onMouseOver={onMouseOver}
+    >
+      {index}
     </Square>
   );
 };
 
+Cell.defaultProps = {
+  typeOfBoat: null,
+  onMouseOver: null,
+  handleClick: null,
+  touched: null,
+};
+
 Cell.propTypes = {
-  positionX: PropTypes.number.isRequired,
-  onMouseOver: PropTypes.func.isRequired,
-  touched: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired,
+  typeOfBoat: PropTypes.string,
+  onMouseOver: PropTypes.func,
+  handleClick: PropTypes.func,
+  touched: PropTypes.bool,
 };
 
 export default Cell;

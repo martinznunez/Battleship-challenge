@@ -35,6 +35,8 @@ const BoatIcon = styled(RiSailboatFill)`
     return '#000';
   }};
   border: ${(p) => (p.selected ? '1px solid red' : '')};
+  cursor: ${(p) => (p.hide ? 'no-drop' : 'pointer')};
+  background: ${(p) => (p.hide ? 'rgba(255,0,0,0.2)' : null)};
 `;
 
 const ContainerBtn = styled.div`
@@ -69,8 +71,8 @@ const BoatsSelector = ({
 }) => {
   const boats = useSelector((state) => state.game.boats);
 
-  const handleClickBoat = (boatId, length) => {
-    handleSelectBoat({ boatId, length });
+  const handleClickBoat = (boatId, length, type, positioned) => {
+    handleSelectBoat({ boatId, length, type, positioned });
   };
 
   const handlerClick = () => {
@@ -84,11 +86,14 @@ const BoatsSelector = ({
   const renderBoat = (boat) => (
     <div key={boat.id}>
       <BoatIcon
+        hide={boat.positioned}
         type={boat.type}
         selected={selectedBoat.id === boat.id}
         src={`/assets/${boat.type}.png`}
         alt="Boat type"
-        onClick={() => handleClickBoat(boat.id, boat.length)}
+        onClick={() =>
+          handleClickBoat(boat.id, boat.length, boat.type, boat.positioned)
+        }
       />
       <p>{boat.type}</p>
     </div>

@@ -1,5 +1,5 @@
 import { generateUserCells } from '../../utils/cells';
-import { HOVER_CELL } from '../../types/index';
+import { SET_CELLS } from '../../types';
 
 const initialState = {
   userCells: generateUserCells(),
@@ -7,7 +7,7 @@ const initialState = {
 
 const cellsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case HOVER_CELL:
+    case SET_CELLS:
       return { ...state, userCells: action.payload };
     default:
       return state;

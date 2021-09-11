@@ -7,11 +7,15 @@ import Cell from '../components/Cell';
 import Button from '../components/Button';
 import BoatsSelector from '../components/BoatsSelector';
 import { boatsOrientations } from '../constants';
-import { userRegistration } from '../store/actions/gameActions';
-import { hoverCell } from '../store/actions/cellsActions';
+import {
+  userRegistration,
+  successfullyPosition,
+} from '../store/actions/gameActions';
+import { hoverCell, setBoatSelection } from '../store/actions/cellsActions';
 import {
   mapAndSetTouchedCells,
   returnAllCellsAsUntouched,
+  checkBoatFill,
 } from '../utils/cells';
 
 const ContainerGroup = styled.div`
@@ -57,6 +61,7 @@ const ContainerInput = styled.div`
 const Start = ({ user, setUser }) => {
   const dispatch = useDispatch();
   const userCells = useSelector((state) => state.cells.userCells);
+  const boatsGroup = useSelector((state) => state.game.boats);
 
   const [isUser, setIsUser] = useState(false);
   const [messageError, setMessageError] = useState('');
@@ -76,12 +81,26 @@ const Start = ({ user, setUser }) => {
     }
   };
 
-  const handleSelectBoat = ({ boatId, length }) => {
-    setSelectedBoat({ id: boatId, length });
+  const handleSelectBoat = ({ boatId, length, type, positioned }) => {
+    if (!positioned) {
+      setSelectedBoat({ id: boatId, length, type });
+    }
   };
 
   const handleCellMouseOver = (hoveredCell) => {
-    if (selectedBoat.id) {
+    if (selectedBoat.id && !hoveredCell.typeOfBoat) {
+      const isSpaceForBoat = checkBoatFill({
+        index: hoveredCell.index,
+        boatLength: selectedBoat.length,
+        orientation: boatOrientation,
+        cells: userCells,
+      });
+
+      if (!isSpaceForBoat) {
+        const initialCells = returnAllCellsAsUntouched(userCells);
+        dispatch(hoverCell(initialCells));
+        return;
+      }
       const updatedUserCells = mapAndSetTouchedCells({
         selectedBoat,
         boatOrientation,
@@ -90,6 +109,9 @@ const Start = ({ user, setUser }) => {
       });
 
       dispatch(hoverCell(updatedUserCells));
+    } else {
+      const initialCells = returnAllCellsAsUntouched(userCells);
+      dispatch(hoverCell(initialCells));
     }
   };
 
@@ -97,9 +119,17 @@ const Start = ({ user, setUser }) => {
     if (selectedBoat.id) {
       const initialCells = returnAllCellsAsUntouched(userCells);
 
-      return dispatch(hoverCell(initialCells));
+      dispatch(hoverCell(initialCells));
     }
     return null;
+  };
+
+  const handleClick = () => {
+    if (selectedBoat.id) {
+      dispatch(setBoatSelection(userCells, selectedBoat));
+      dispatch(successfullyPosition(selectedBoat, boatsGroup));
+      setSelectedBoat({ id: '', length: 0 });
+    }
   };
 
   return (
@@ -121,6 +151,9 @@ const Start = ({ user, setUser }) => {
           <Card onMouseLeave={onMouseLeave}>
             {userCells.map((cell) => (
               <Cell
+                index={cell.index}
+                typeOfBoat={cell.typeOfBoat}
+                handleClick={handleClick}
                 key={cell.id}
                 touched={cell.touched}
                 positionX={cell.positionX}

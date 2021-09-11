@@ -1,7 +1,7 @@
 export default {
   GAME_STATUS: {
     INIT: 'init',
-    GAME: 'game',
+    PLAYING: 'playing',
   },
 };
 export const boatTypes = {

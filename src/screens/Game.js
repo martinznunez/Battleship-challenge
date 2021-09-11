@@ -22,11 +22,6 @@ const Card = styled.div`
 
 const Game = () => {
   const userCells = useSelector((state) => state.cells.userCells);
-  console.log(
-    '%c 🥖 userCells: ',
-    'font-size:20px;background-color: #FFDD4D;color:#fff;',
-    userCells
-  );
 
   return (
     <>
@@ -34,12 +29,17 @@ const Game = () => {
       <Container>
         <Card>
           {userCells.map((cell) => (
-            <Cell key={cell.id} positionX={cell.positionX} />
+            <Cell
+              key={cell.id}
+              typeOfBoat={cell.typeOfBoat}
+              index={cell.index}
+              positionX={cell.positionX}
+            />
           ))}
         </Card>
         <Card>
           {userCells.map((cell) => (
-            <Cell key={cell.id} positionX={cell.positionX} />
+            <Cell key={cell.id} index={cell.index} positionX={cell.positionX} />
           ))}
         </Card>
       </Container>

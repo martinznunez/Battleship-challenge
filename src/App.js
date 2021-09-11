@@ -6,7 +6,6 @@ import Game from './screens/Game';
 
 function App() {
   const gameStatus = useSelector((state) => state.game.status);
-  const initialGame = useSelector((state) => state.game.game);
 
   const [user, setUser] = useState('');
 
@@ -14,7 +13,7 @@ function App() {
     return <Start setUser={setUser} user={user} />;
   }
 
-  if (initialGame === constants.GAME_STATUS.GAME) {
+  if (gameStatus === constants.GAME_STATUS.PLAYING) {
     return <Game />;
   }
 
