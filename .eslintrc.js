@@ -20,7 +20,7 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     allowForLoopAfterthoughts: 0,
     'react/react-in-jsx-scope': 'off',
-
+    'no-plusplus': 0,
     'prettier/prettier': [
       'error',
       {
