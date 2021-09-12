@@ -6,3 +6,5 @@ export const CHANGE_GAME_STATUS = 'CHANGE_GAME_STATUS';
 export const SET_CPU_CELLS = 'SET_CPU_CELLS';
 export const CHANGE_TURN = 'CHANGE_TURN';
 export const SET_WINNER = 'SET_WINNER';
+export const RESTART_GAME = 'RESTART_GAME';
+export const RESTART_CELLS = 'RESTART_CELLS';

@@ -1,5 +1,5 @@
 import { generateUserCells, generateCpuCells } from '../../utils/cells';
-import { SET_CELLS, SET_CPU_CELLS } from '../../types';
+import { SET_CELLS, SET_CPU_CELLS, RESTART_CELLS } from '../../types';
 
 const initialState = {
   userCells: generateUserCells(),
@@ -13,6 +13,8 @@ const cellsReducer = (state = initialState, action) => {
 
     case SET_CPU_CELLS:
       return { ...state, cpuCells: action.payload };
+    case RESTART_CELLS:
+      return { ...initialState };
     default:
       return state;
   }

@@ -6,6 +6,7 @@ const Square = styled.span`
   flex-basis: calc(10% - 4px);
   height: 30px;
   border: 2px solid #777;
+  margin: auto;
   background: ${(p) => p.bgColor};
 `;
 

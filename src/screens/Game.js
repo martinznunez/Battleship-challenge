@@ -11,6 +11,7 @@ import {
 import { getBgColor, getRandomAvailableCell } from '../utils/cells';
 import checkWinner from '../utils/game';
 import { turnUser, gameStatus } from '../constants/index';
+import Button from '../components/Button';
 
 const Container = styled.div`
   margin: auto;
@@ -19,6 +20,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const ContainerTitle = styled.div`
@@ -43,13 +45,16 @@ const ContainerName = styled.div`
   font-size: 1.4rem;
   text-transform: uppercase;
   font-weight: 300;
+  margin-top: 40px;
 `;
 
 const Card = styled.div`
-  width: 40%;
-  border: 3px solid gray;
+  width: 30%;
+  max-width: 500px;
+  border: 4px solid gray;
   height: auto;
   display: flex;
+  min-width: 300px;
   flex-wrap: wrap;
 `;
 
@@ -79,12 +84,18 @@ const Game = () => {
     }
     if (turn === turnUser.CPU) {
       const cell = getRandomAvailableCell(userCells);
+
       setTimeout(() => {
         dispatch(attack(cell, userCells, turn));
         dispatch(changeTurn(turn));
-      }, 1500);
+      }, 1000);
     }
   }, [turn]);
+
+  const handleSurrender = () => {
+    dispatch(setWinner(turnUser.CPU));
+    dispatch(changeGameStatus(gameStatus.FINISHED));
+  };
 
   const hideBoats = true;
 
@@ -93,10 +104,7 @@ const Game = () => {
       <ContainerTitle>
         <h1>Game</h1>
         <h5> Playing: {turn === turnUser.USER ? userName : turnUser.CPU} </h5>
-        <ContainerName>
-          <p> {userName} </p>
-          <p> computer </p>
-        </ContainerName>
+        <Button value="Surrender" handlerClick={handleSurrender} />
       </ContainerTitle>
       <Container>
         <Card>
@@ -108,6 +116,7 @@ const Game = () => {
             />
           ))}
         </Card>
+
         <Card>
           {cpuCells.map((cell) => (
             <Cell
@@ -120,6 +129,10 @@ const Game = () => {
           ))}
         </Card>
       </Container>
+      <ContainerName>
+        <p> {userName} </p>
+        <p> computer </p>
+      </ContainerName>
     </>
   );
 };

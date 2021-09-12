@@ -7,6 +7,7 @@ import {
   CHANGE_GAME_STATUS,
   CHANGE_TURN,
   SET_WINNER,
+  RESTART_GAME,
 } from '../../types/index';
 
 const initialState = {
@@ -136,6 +137,11 @@ const gameReducer = (state = initialState, action) => {
       return {
         ...state,
         winner: action.payload,
+      };
+
+    case RESTART_GAME:
+      return {
+        ...initialState,
       };
 
     default:

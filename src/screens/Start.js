@@ -36,18 +36,20 @@ const ContainerGroup = styled.div`
 
 const Container = styled.div`
   margin: auto;
-  width: 95%;
-  height: 90vh;
+  width: 100%;
   display: flex;
+  height: auto;
   justify-content: center;
   align-items: center;
 `;
 
 const Card = styled.div`
-  width: 40%;
-  border: 3px solid gray;
+  width: 30%;
+  max-width: 500px;
+  border: 4px solid gray;
   height: auto;
   display: flex;
+  min-width: 300px;
   flex-wrap: wrap;
 `;
 const ContainerInput = styled.div`

@@ -5,6 +5,7 @@ import {
   SET_CPU_BOATS,
   CHANGE_TURN,
   SET_WINNER,
+  RESTART_GAME,
 } from '../../types/index';
 import { turnUser, gameStatus } from '../../constants';
 
@@ -85,5 +86,11 @@ export function setWinner(winner) {
   return {
     type: SET_WINNER,
     payload: winner,
+  };
+}
+
+export function restartGame() {
+  return {
+    type: RESTART_GAME,
   };
 }

@@ -1,4 +1,4 @@
-import { SET_CELLS, SET_CPU_CELLS } from '../../types/index';
+import { SET_CELLS, SET_CPU_CELLS, RESTART_CELLS } from '../../types/index';
 import { damageBoat } from './gameActions';
 import { turnUser } from '../../constants';
 
@@ -62,5 +62,11 @@ export function attack(cell, cells, turn = turnUser.USER) {
       type: turn === turnUser.USER ? SET_CPU_CELLS : SET_CELLS,
       payload: updatedCells,
     });
+  };
+}
+
+export function restartCells() {
+  return {
+    type: RESTART_CELLS,
   };
 }

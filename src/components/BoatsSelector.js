@@ -15,9 +15,15 @@ const Container = styled.div`
   padding-top: 20px;
 `;
 
+const BoatType = styled.p`
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-bottom: 50px;
+`;
+
 const BoatIcon = styled(RiSailboatFill)`
   font-size: 4rem;
-  margin: 15px;
+  margin: 15px 15px 5px 15px;
   cursor: pointer;
   color: ${(p) => {
     if (p.type === boatTypes.CRUISER) {
@@ -95,7 +101,7 @@ const BoatsSelector = ({
           handleClickBoat(boat.id, boat.length, boat.type, boat.positioned)
         }
       />
-      <p>{boat.type}</p>
+      <BoatType>{boat.type}</BoatType>
     </div>
   );
 

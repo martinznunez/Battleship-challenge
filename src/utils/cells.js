@@ -233,9 +233,5 @@ export const getBgColor = (cell, hideBoats = false) => {
 export const getRandomAvailableCell = (cells) => {
   const freeCells = cells.filter((c) => !c.water && !c.typeOfDamage);
 
-  const randomNumber = Math.floor(
-    Math.random() * (freeCells.length - 0 + 1) + 0
-  );
-
-  return freeCells[randomNumber];
+  return freeCells[Math.floor(Math.random() * freeCells.length)];
 };
