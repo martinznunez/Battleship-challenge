@@ -1,7 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Cell from '../components/Cell';
+import { attack } from '../store/actions/cellsActions';
 
 const Container = styled.div`
   margin: auto;
@@ -41,9 +42,14 @@ const Card = styled.div`
 `;
 
 const Game = () => {
+  const dispatch = useDispatch();
   const userCells = useSelector((state) => state.cells.userCells);
   const cpuCells = useSelector((state) => state.cells.cpuCells);
   const userName = useSelector((state) => state.game.userName);
+
+  const handleClick = (cell) => {
+    dispatch(attack(cell, cpuCells));
+  };
 
   return (
     <>
@@ -68,10 +74,13 @@ const Game = () => {
         <Card>
           {cpuCells.map((cell) => (
             <Cell
+              handleClick={() => handleClick(cell)}
               key={cell.id}
               index={cell.index}
               typeOfBoat={cell.typeOfBoat}
               positionX={cell.positionX}
+              water={cell.water}
+              typeOfDamage={cell.typeOfDamage}
             />
           ))}
         </Card>

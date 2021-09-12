@@ -14,9 +14,9 @@ const generateGrid = () => {
         id,
         typeOfBoat: null,
         boatId: null,
-        damaged: false,
-        destroyed: false,
+        typeOfDamage: null,
         touched: false,
+        water: false,
         index,
       });
     }

@@ -9,23 +9,49 @@ const Square = styled.span`
   background: ${(p) => p.bgColor};
 `;
 
-const getColor = (touched, typeOfBoat) => {
+const getColor = ({ touched, water, typeOfBoat, typeOfDamage }) => {
   let baseCondition = typeOfBoat;
+
   if (touched) {
     baseCondition = 'touched';
   }
+
+  if (water) {
+    baseCondition = 'water';
+  }
+
+  if (typeOfDamage) {
+    baseCondition = typeOfDamage;
+  }
+
   const colors = {
     touched: '#000',
-    cruiser: 'red',
+    cruiser: 'orange',
     carrier: 'green',
     submarine: 'blue',
+    water: 'lightblue',
+    damaged: 'yellow',
+    destroyed: 'red',
   };
 
   return colors[baseCondition];
 };
 
-const Cell = ({ onMouseOver, touched, handleClick, typeOfBoat, index }) => {
-  const bgColor = getColor(touched, typeOfBoat);
+const Cell = ({
+  onMouseOver,
+  touched,
+  handleClick,
+  typeOfBoat,
+  index,
+  water,
+  typeOfDamage,
+}) => {
+  const bgColor = getColor({
+    touched,
+    water,
+    typeOfDamage,
+    typeOfBoat,
+  });
 
   return (
     <Square
@@ -45,14 +71,19 @@ Cell.defaultProps = {
   onMouseOver: null,
   handleClick: null,
   touched: null,
+  water: null,
+  typeOfDamage: null,
+  index: null,
 };
 
 Cell.propTypes = {
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number,
   typeOfBoat: PropTypes.string,
   onMouseOver: PropTypes.func,
   handleClick: PropTypes.func,
   touched: PropTypes.bool,
+  water: PropTypes.bool,
+  typeOfDamage: PropTypes.string,
 };
 
 export default Cell;

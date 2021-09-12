@@ -124,7 +124,10 @@ const Start = ({ user, setUser }) => {
     return null;
   };
 
-  const handleClick = () => {
+  const handleClick = (cell) => {
+    if (cell.typeOfBoat) {
+      return;
+    }
     if (selectedBoat.id) {
       dispatch(setBoatSelection(userCells, selectedBoat));
       dispatch(successfullyPosition(selectedBoat, boatsGroup));
@@ -153,7 +156,7 @@ const Start = ({ user, setUser }) => {
               <Cell
                 index={cell.index}
                 typeOfBoat={cell.typeOfBoat}
-                handleClick={handleClick}
+                handleClick={() => handleClick(cell)}
                 key={cell.id}
                 touched={cell.touched}
                 positionX={cell.positionX}

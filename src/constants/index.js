@@ -26,28 +26,38 @@ export const boatsOrientations = {
 
 export const initialCpuBoats = [
   {
-    id: uuid(),
+    id: 1,
     type: boatTypes.CARRIER,
     length: 4,
+    destroyed: false,
+    numberOfImpacts: 0,
   },
   {
-    id: uuid(),
+    id: 2,
     type: boatTypes.CRUISER,
     length: 3,
+    destroyed: false,
+    numberOfImpacts: 0,
   },
   {
-    id: uuid(),
+    id: 3,
     type: boatTypes.CRUISER,
     length: 3,
+    destroyed: false,
+    numberOfImpacts: 0,
   },
   {
-    id: uuid(),
+    id: 4,
     type: boatTypes.CRUISER,
     length: 3,
+    destroyed: false,
+    numberOfImpacts: 0,
   },
   {
-    id: uuid(),
+    id: 5,
     type: boatTypes.SUBMARINE,
     length: 2,
+    destroyed: false,
+    numberOfImpacts: 0,
   },
 ];

@@ -2,7 +2,8 @@ import { v4 as uuid } from 'uuid';
 import { boatTypes, initialCpuBoats } from '../../constants';
 import {
   USER_SUCCESSFUL_REGISTRATION,
-  SET_BOAT,
+  SET_BOATS,
+  SET_CPU_BOATS,
   CHANGE_GAME_STATUS,
 } from '../../types/index';
 
@@ -16,33 +17,84 @@ const initialState = {
       type: boatTypes.CARRIER,
       length: 4,
       positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
     },
     {
       id: uuid(),
       type: boatTypes.CRUISER,
       length: 3,
       positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
     },
     {
       id: uuid(),
       type: boatTypes.CRUISER,
       length: 3,
       positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
     },
     {
       id: uuid(),
       type: boatTypes.CRUISER,
       length: 3,
       positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
     },
     {
       id: uuid(),
       type: boatTypes.SUBMARINE,
       length: 2,
       positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
     },
   ],
-  cpuBoats: initialCpuBoats,
+  cpuBoats: [
+    {
+      id: 1,
+      type: boatTypes.CARRIER,
+      length: 4,
+      positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
+    },
+    {
+      id: 2,
+      type: boatTypes.CRUISER,
+      length: 3,
+      positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
+    },
+    {
+      id: 3,
+      type: boatTypes.CRUISER,
+      length: 3,
+      positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
+    },
+    {
+      id: 4,
+      type: boatTypes.CRUISER,
+      length: 3,
+      positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
+    },
+    {
+      id: 5,
+      type: boatTypes.SUBMARINE,
+      length: 2,
+      positioned: false,
+      destroyed: false,
+      numberOfImpacts: 0,
+    },
+  ],
 };
 const gameReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -52,10 +104,16 @@ const gameReducer = (state = initialState, action) => {
         userName: action.payload,
       };
 
-    case SET_BOAT:
+    case SET_BOATS:
       return {
         ...state,
         boats: action.payload,
+      };
+
+    case SET_CPU_BOATS:
+      return {
+        ...state,
+        cpuBoats: action.payload,
       };
 
     case CHANGE_GAME_STATUS:
