@@ -1,9 +1,9 @@
-export default {
-  GAME_STATUS: {
-    INIT: 'init',
-    GAME: 'game',
-  },
+export const gameStatus = {
+  INIT: 'init`',
+  PLAYING: 'playing',
+  FINISHED: 'finished',
 };
+
 export const boatTypes = {
   SUBMARINE: 'submarine',
   CARRIER: 'carrier',
@@ -20,4 +20,57 @@ export const directionsConst = {
 export const boatsOrientations = {
   HORIZONTAL: 'horizontal',
   VERTICAL: 'vertical',
+};
+
+export const initialCpuBoats = [
+  {
+    id: 1,
+    type: boatTypes.CARRIER,
+    length: 4,
+    destroyed: false,
+    numberOfImpacts: 0,
+  },
+  {
+    id: 2,
+    type: boatTypes.CRUISER,
+    length: 3,
+    destroyed: false,
+    numberOfImpacts: 0,
+  },
+  {
+    id: 3,
+    type: boatTypes.CRUISER,
+    length: 3,
+    destroyed: false,
+    numberOfImpacts: 0,
+  },
+  {
+    id: 4,
+    type: boatTypes.CRUISER,
+    length: 3,
+    destroyed: false,
+    numberOfImpacts: 0,
+  },
+  {
+    id: 5,
+    type: boatTypes.SUBMARINE,
+    length: 2,
+    destroyed: false,
+    numberOfImpacts: 0,
+  },
+];
+
+export const colors = {
+  GRAY: '#58555A',
+  YELLOW: '#FBF37C',
+  RED: '#BB2020',
+  GREEN: '#3EB595',
+  LIGHTBLUE: '#9ACFDD',
+  VIOLET: '#506AD4',
+  ORANGE: '#F28C0F',
+};
+
+export const turnUser = {
+  USER: 'user',
+  CPU: 'cpu',
 };

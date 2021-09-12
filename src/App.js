@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import constants from './constants';
+import { gameStatus } from './constants';
 import Start from './screens/Start';
 import Game from './screens/Game';
+import GameWinner from './screens/GameWinner';
 
 function App() {
-  const gameStatus = useSelector((state) => state.game.status);
-  const initialGame = useSelector((state) => state.game.game);
+  const gameStatusState = useSelector((state) => state.game.status);
 
   const [user, setUser] = useState('');
 
-  if (gameStatus === constants.GAME_STATUS.INIT) {
+  if (gameStatusState === gameStatus.INIT) {
     return <Start setUser={setUser} user={user} />;
   }
 
-  if (initialGame === constants.GAME_STATUS.GAME) {
+  if (gameStatusState === gameStatus.PLAYING) {
     return <Game />;
+  }
+
+  if (gameStatusState === gameStatus.FINISHED) {
+    return <GameWinner />;
   }
 
   return <div>APP</div>;

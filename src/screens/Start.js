@@ -7,8 +7,17 @@ import Cell from '../components/Cell';
 import Button from '../components/Button';
 import BoatsSelector from '../components/BoatsSelector';
 import { boatsOrientations } from '../constants';
-import { userRegistration } from '../store/actions/gameActions';
-import { hoverCell } from '../store/actions/cellsActions';
+import {
+  userRegistration,
+  successfullyPosition,
+} from '../store/actions/gameActions';
+import { hoverCell, setBoatSelection } from '../store/actions/cellsActions';
+import {
+  mapAndSetTouchedCells,
+  returnAllCellsAsUntouched,
+  checkBoatFill,
+  getBgColor,
+} from '../utils/cells';
 
 const ContainerGroup = styled.div`
   margin: auto;
@@ -27,18 +36,20 @@ const ContainerGroup = styled.div`
 
 const Container = styled.div`
   margin: auto;
-  width: 95%;
-  height: 90vh;
+  width: 100%;
   display: flex;
+  height: auto;
   justify-content: center;
   align-items: center;
 `;
 
 const Card = styled.div`
-  width: 40%;
-  border: 3px solid gray;
+  width: 30%;
+  max-width: 500px;
+  border: 4px solid gray;
   height: auto;
   display: flex;
+  min-width: 300px;
   flex-wrap: wrap;
 `;
 const ContainerInput = styled.div`
@@ -53,10 +64,11 @@ const ContainerInput = styled.div`
 const Start = ({ user, setUser }) => {
   const dispatch = useDispatch();
   const userCells = useSelector((state) => state.cells.userCells);
+  const boatsGroup = useSelector((state) => state.game.boats);
 
   const [isUser, setIsUser] = useState(false);
   const [messageError, setMessageError] = useState('');
-  const [selectedBoat, setSelectedBoat] = useState({ id: '', length: '' });
+  const [selectedBoat, setSelectedBoat] = useState({ id: '', length: 0 });
   const [boatOrientation, setBoatOrientation] = useState(
     boatsOrientations.HORIZONTAL
   );
@@ -72,24 +84,57 @@ const Start = ({ user, setUser }) => {
     }
   };
 
-  const handleSelectBoat = ({ boatId, length }) => {
-    setSelectedBoat({ id: boatId, length });
+  const handleSelectBoat = ({ boatId, length, type, positioned }) => {
+    if (!positioned) {
+      setSelectedBoat({ id: boatId, length, type });
+    }
   };
 
-  const handleCellMouseOver = (cellId) => {
-    if (selectedBoat.id) {
-      const updatedUserCells = userCells.map((cell) => {
-        const copiedCell = cell;
-        if (copiedCell.id === cellId) {
-          copiedCell.touched = true;
-        } else {
-          copiedCell.touched = false;
-        }
+  const handleCellMouseOver = (hoveredCell) => {
+    if (selectedBoat.id && !hoveredCell.typeOfBoat) {
+      const isSpaceForBoat = checkBoatFill({
+        index: hoveredCell.index,
+        boatLength: selectedBoat.length,
+        orientation: boatOrientation,
+        cells: userCells,
+      });
 
-        return copiedCell;
+      if (!isSpaceForBoat) {
+        const initialCells = returnAllCellsAsUntouched(userCells);
+        dispatch(hoverCell(initialCells));
+        return;
+      }
+      const updatedUserCells = mapAndSetTouchedCells({
+        selectedBoat,
+        boatOrientation,
+        userCells,
+        hoveredCell,
       });
 
       dispatch(hoverCell(updatedUserCells));
+    } else {
+      const initialCells = returnAllCellsAsUntouched(userCells);
+      dispatch(hoverCell(initialCells));
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (selectedBoat.id) {
+      const initialCells = returnAllCellsAsUntouched(userCells);
+
+      dispatch(hoverCell(initialCells));
+    }
+    return null;
+  };
+
+  const handleClick = (cell) => {
+    if (cell.typeOfBoat) {
+      return;
+    }
+    if (selectedBoat.id) {
+      dispatch(setBoatSelection(userCells, selectedBoat));
+      dispatch(successfullyPosition(selectedBoat, boatsGroup));
+      setSelectedBoat({ id: '', length: 0 });
     }
   };
 
@@ -100,6 +145,8 @@ const Start = ({ user, setUser }) => {
         {isUser ? (
           <div>
             <BoatsSelector
+              boatOrientation={boatOrientation}
+              setBoatOrientation={setBoatOrientation}
               handleSelectBoat={handleSelectBoat}
               selectedBoat={selectedBoat}
             />
@@ -107,13 +154,15 @@ const Start = ({ user, setUser }) => {
         ) : null}
 
         <Container>
-          <Card>
+          <Card onMouseLeave={onMouseLeave}>
             {userCells.map((cell) => (
               <Cell
+                bgColor={getBgColor(cell)}
+                index={cell.index}
+                handleClick={() => handleClick(cell)}
                 key={cell.id}
-                touched={cell.touched}
                 positionX={cell.positionX}
-                onMouseOver={() => handleCellMouseOver(cell.id)}
+                onMouseOver={() => handleCellMouseOver(cell)}
               />
             ))}
           </Card>

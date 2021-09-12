@@ -6,20 +6,26 @@ const Square = styled.span`
   flex-basis: calc(10% - 4px);
   height: 30px;
   border: 2px solid #777;
-  background: ${(p) => p.touched && '#000'};
+  margin: auto;
+  background: ${(p) => p.bgColor};
 `;
-const Cell = ({ positionX, onMouseOver, touched }) => {
+
+const Cell = ({ onMouseOver, handleClick, bgColor }) => {
   return (
-    <Square touched={touched} onMouseOver={onMouseOver}>
-      {positionX}
-    </Square>
+    <Square onClick={handleClick} bgColor={bgColor} onMouseOver={onMouseOver} />
   );
 };
 
+Cell.defaultProps = {
+  bgColor: null,
+  onMouseOver: null,
+  handleClick: null,
+};
+
 Cell.propTypes = {
-  positionX: PropTypes.number.isRequired,
-  onMouseOver: PropTypes.func.isRequired,
-  touched: PropTypes.bool.isRequired,
+  onMouseOver: PropTypes.func,
+  handleClick: PropTypes.func,
+  bgColor: PropTypes.string,
 };
 
 export default Cell;
