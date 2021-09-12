@@ -1,5 +1,6 @@
 import { SET_CELLS, SET_CPU_CELLS } from '../../types/index';
 import { damageBoat } from './gameActions';
+import { turnUser } from '../../constants';
 
 export function hoverCell(cells) {
   return {
@@ -26,7 +27,7 @@ export function setBoatSelection(cells, selectedBoat) {
   };
 }
 
-export function attack(cell, cells) {
+export function attack(cell, cells, turn = turnUser.USER) {
   return (dispatch, getState) => {
     const boatFromState = getState().game.cpuBoats.find(
       (boat) => boat.id === cell.boatId
@@ -46,7 +47,7 @@ export function attack(cell, cells) {
           currentCell.typeOfDamage = boatWillBeDestroy
             ? 'destroyed'
             : 'damaged';
-          dispatch(damageBoat(currentCell.boatId));
+          dispatch(damageBoat(currentCell.boatId, turn));
         }
       } else if (
         boatWillBeDestroy &&
@@ -58,7 +59,7 @@ export function attack(cell, cells) {
     });
 
     dispatch({
-      type: SET_CPU_CELLS,
+      type: turn === turnUser.USER ? SET_CPU_CELLS : SET_CELLS,
       payload: updatedCells,
     });
   };

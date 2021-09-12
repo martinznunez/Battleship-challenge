@@ -1,11 +1,9 @@
-import { v4 as uuid } from 'uuid';
-
-export default {
-  GAME_STATUS: {
-    INIT: 'init',
-    PLAYING: 'playing',
-  },
+export const gameStatus = {
+  INIT: 'init`',
+  PLAYING: 'playing',
+  FINISHED: 'finished',
 };
+
 export const boatTypes = {
   SUBMARINE: 'submarine',
   CARRIER: 'carrier',
@@ -70,4 +68,9 @@ export const colors = {
   LIGHTBLUE: '#9ACFDD',
   VIOLET: '#506AD4',
   ORANGE: '#F28C0F',
+};
+
+export const turnUser = {
+  USER: 'user',
+  CPU: 'cpu',
 };

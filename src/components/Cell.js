@@ -9,11 +9,9 @@ const Square = styled.span`
   background: ${(p) => p.bgColor};
 `;
 
-const Cell = ({ onMouseOver, handleClick, index, bgColor }) => {
+const Cell = ({ onMouseOver, handleClick, bgColor }) => {
   return (
-    <Square onClick={handleClick} bgColor={bgColor} onMouseOver={onMouseOver}>
-      {index}
-    </Square>
+    <Square onClick={handleClick} bgColor={bgColor} onMouseOver={onMouseOver} />
   );
 };
 
@@ -21,11 +19,9 @@ Cell.defaultProps = {
   bgColor: null,
   onMouseOver: null,
   handleClick: null,
-  index: null,
 };
 
 Cell.propTypes = {
-  index: PropTypes.number,
   onMouseOver: PropTypes.func,
   handleClick: PropTypes.func,
   bgColor: PropTypes.string,

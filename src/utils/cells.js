@@ -198,12 +198,12 @@ export const checkBoatFill = ({ index, boatLength, orientation, cells }) => {
   return true;
 };
 
-export const getBgColor = (cell) => {
+export const getBgColor = (cell, hideBoats = false) => {
   const { touched, water, typeOfBoat, typeOfDamage } = cell;
 
   // TODO improve logic, move all these conditions to a unique status for the cell
 
-  let baseCondition = typeOfBoat;
+  let baseCondition = hideBoats ? null : typeOfBoat;
 
   if (touched) {
     baseCondition = 'touched';
@@ -218,14 +218,24 @@ export const getBgColor = (cell) => {
   }
 
   const availableColors = {
-    touched: colors.GRAY,
     cruiser: colors.ORANGE,
     carrier: colors.VIOLET,
     submarine: colors.GREEN,
+    touched: colors.GRAY,
     water: colors.LIGHTBLUE,
     damaged: colors.YELLOW,
     destroyed: colors.RED,
   };
 
   return availableColors[baseCondition];
+};
+
+export const getRandomAvailableCell = (cells) => {
+  const freeCells = cells.filter((c) => !c.water && !c.typeOfDamage);
+
+  const randomNumber = Math.floor(
+    Math.random() * (freeCells.length - 0 + 1) + 0
+  );
+
+  return freeCells[randomNumber];
 };

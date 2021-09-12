@@ -1,16 +1,20 @@
 import { v4 as uuid } from 'uuid';
-import { boatTypes } from '../../constants';
+import { boatTypes, gameStatus } from '../../constants';
 import {
   USER_SUCCESSFUL_REGISTRATION,
   SET_BOATS,
   SET_CPU_BOATS,
   CHANGE_GAME_STATUS,
+  CHANGE_TURN,
+  SET_WINNER,
 } from '../../types/index';
 
 const initialState = {
-  status: 'init',
+  status: gameStatus.INIT,
   game: 'game',
   userName: '',
+  turn: 'user',
+  winner: null,
   boats: [
     {
       id: uuid(),
@@ -120,6 +124,18 @@ const gameReducer = (state = initialState, action) => {
       return {
         ...state,
         status: action.payload,
+      };
+
+    case CHANGE_TURN:
+      return {
+        ...state,
+        turn: action.payload,
+      };
+
+    case SET_WINNER:
+      return {
+        ...state,
+        winner: action.payload,
       };
 
     default:

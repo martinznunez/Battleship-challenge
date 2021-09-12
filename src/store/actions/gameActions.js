@@ -3,8 +3,10 @@ import {
   CHANGE_GAME_STATUS,
   SET_BOATS,
   SET_CPU_BOATS,
+  CHANGE_TURN,
+  SET_WINNER,
 } from '../../types/index';
-import constants from '../../constants';
+import { turnUser, gameStatus } from '../../constants';
 
 export function userRegistration(user) {
   return {
@@ -13,7 +15,7 @@ export function userRegistration(user) {
   };
 }
 
-function changeGameStatus(status) {
+export function changeGameStatus(status) {
   return {
     type: CHANGE_GAME_STATUS,
     payload: status,
@@ -41,12 +43,12 @@ export function successfullyPosition(selectedBoat, boatsGroup) {
     dispatch(setBoat(boatsPositioned));
 
     if (boatsPositioned.every((boat) => boat.positioned)) {
-      dispatch(changeGameStatus(constants.GAME_STATUS.PLAYING));
+      dispatch(changeGameStatus(gameStatus.PLAYING));
     }
   };
 }
 
-export function damageBoat(boatId) {
+export function damageBoat(boatId, turn) {
   return (dispatch, getState) => {
     const cpuBoats = getState().game;
 
@@ -64,8 +66,24 @@ export function damageBoat(boatId) {
     });
 
     dispatch({
-      type: SET_CPU_BOATS,
+      type: turn === turnUser.USER ? SET_CPU_BOATS : SET_BOATS,
       payload: updatedCpuBoats,
     });
+  };
+}
+
+export function changeTurn(turn) {
+  const newTurn = turn === turnUser.USER ? turnUser.CPU : turnUser.USER;
+
+  return {
+    type: CHANGE_TURN,
+    payload: newTurn,
+  };
+}
+
+export function setWinner(winner) {
+  return {
+    type: SET_WINNER,
+    payload: winner,
   };
 }
