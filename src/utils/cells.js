@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { boatsOrientations, initialCpuBoats } from '../constants';
+import { boatsOrientations, initialCpuBoats, colors } from '../constants';
 
 const generateGrid = () => {
   const cells = [];
@@ -196,4 +196,36 @@ export const checkBoatFill = ({ index, boatLength, orientation, cells }) => {
   }
 
   return true;
+};
+
+export const getBgColor = (cell) => {
+  const { touched, water, typeOfBoat, typeOfDamage } = cell;
+
+  // TODO improve logic, move all these conditions to a unique status for the cell
+
+  let baseCondition = typeOfBoat;
+
+  if (touched) {
+    baseCondition = 'touched';
+  }
+
+  if (water) {
+    baseCondition = 'water';
+  }
+
+  if (typeOfDamage) {
+    baseCondition = typeOfDamage;
+  }
+
+  const availableColors = {
+    touched: colors.GRAY,
+    cruiser: colors.ORANGE,
+    carrier: colors.VIOLET,
+    submarine: colors.GREEN,
+    water: colors.LIGHTBLUE,
+    damaged: colors.YELLOW,
+    destroyed: colors.RED,
+  };
+
+  return availableColors[baseCondition];
 };

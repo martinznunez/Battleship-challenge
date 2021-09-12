@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { boatTypes, initialCpuBoats } from '../../constants';
+import { boatTypes } from '../../constants';
 import {
   USER_SUCCESSFUL_REGISTRATION,
   SET_BOATS,

@@ -16,6 +16,7 @@ import {
   mapAndSetTouchedCells,
   returnAllCellsAsUntouched,
   checkBoatFill,
+  getBgColor,
 } from '../utils/cells';
 
 const ContainerGroup = styled.div`
@@ -154,11 +155,10 @@ const Start = ({ user, setUser }) => {
           <Card onMouseLeave={onMouseLeave}>
             {userCells.map((cell) => (
               <Cell
+                bgColor={getBgColor(cell)}
                 index={cell.index}
-                typeOfBoat={cell.typeOfBoat}
                 handleClick={() => handleClick(cell)}
                 key={cell.id}
-                touched={cell.touched}
                 positionX={cell.positionX}
                 onMouseOver={() => handleCellMouseOver(cell)}
               />

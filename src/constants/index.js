@@ -61,3 +61,13 @@ export const initialCpuBoats = [
     numberOfImpacts: 0,
   },
 ];
+
+export const colors = {
+  GRAY: '#58555A',
+  YELLOW: '#FBF37C',
+  RED: '#BB2020',
+  GREEN: '#3EB595',
+  LIGHTBLUE: '#9ACFDD',
+  VIOLET: '#506AD4',
+  ORANGE: '#F28C0F',
+};

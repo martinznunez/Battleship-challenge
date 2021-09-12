@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Cell from '../components/Cell';
 import { attack } from '../store/actions/cellsActions';
+import { getBgColor } from '../utils/cells';
 
 const Container = styled.div`
   margin: auto;
@@ -64,8 +65,8 @@ const Game = () => {
         <Card>
           {userCells.map((cell) => (
             <Cell
+              bgColor={getBgColor(cell)}
               key={cell.id}
-              typeOfBoat={cell.typeOfBoat}
               index={cell.index}
               positionX={cell.positionX}
             />
@@ -74,13 +75,11 @@ const Game = () => {
         <Card>
           {cpuCells.map((cell) => (
             <Cell
+              bgColor={getBgColor(cell)}
               handleClick={() => handleClick(cell)}
               key={cell.id}
               index={cell.index}
-              typeOfBoat={cell.typeOfBoat}
               positionX={cell.positionX}
-              water={cell.water}
-              typeOfDamage={cell.typeOfDamage}
             />
           ))}
         </Card>

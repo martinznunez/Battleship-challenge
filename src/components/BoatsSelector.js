@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RiSailboatFill } from 'react-icons/ri';
 import Button from './Button';
-import { boatTypes, boatsOrientations } from '../constants';
+import { boatTypes, boatsOrientations, colors } from '../constants';
 
 const Container = styled.div`
   width: 100%;
@@ -21,15 +21,15 @@ const BoatIcon = styled(RiSailboatFill)`
   cursor: pointer;
   color: ${(p) => {
     if (p.type === boatTypes.CRUISER) {
-      return 'red';
+      return colors.ORANGE;
     }
 
     if (p.type === boatTypes.SUBMARINE) {
-      return 'blue';
+      return colors.GREEN;
     }
 
     if (p.type === boatTypes.CARRIER) {
-      return 'green';
+      return colors.VIOLET;
     }
 
     return '#000';
